@@ -4,6 +4,8 @@ services:
   app:
     container_name: fastapi_practice
     build: ./app
+    volumes:
+      - ./messages:/appp/messages
     env_file: .env
     ports:
       - "5000:9004"

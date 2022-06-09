@@ -1,4 +1,4 @@
 FROM python:3.7
-WORKDIR /app
+WORKDIR /appp
 COPY . .
 RUN pip install -r requirements.txt
