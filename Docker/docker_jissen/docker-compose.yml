@@ -4,9 +4,7 @@ services:
   app:
     container_name: fastapi_practice
     build: ./app
-    volumes:
-      - ./messages:/appp/messages
     env_file: .env
     ports:
-      - "5000:9004"
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 9004
+      - "5000:5000"
+    command: gunicorn main:app -b 0.0.0.0:5000
