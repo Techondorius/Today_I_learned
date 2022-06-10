@@ -1,13 +1,10 @@
-from fastapi import FastAPI
+from flask import Flask
 
-app = FastAPI()
+app = Flask(__name__)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.route('/')
+def index():
+    return {'message': 'hiiiii'}
 
-@app.post('/posttest/')
-def posttest(message : str = "0"):
-    with open('messages/messages.txt', mode='w') as file:
-        file.write(message)
-    return {"posted" : message}
+if __name__ == '__main__':
+    app.run(port=5000)
