@@ -6,5 +6,5 @@ services:
     build: ./app
     env_file: .env
     ports:
-      - "5000:5000"
+      - "5001:5000"
     command: gunicorn main:app -b 0.0.0.0:5000
