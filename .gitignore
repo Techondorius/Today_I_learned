@@ -132,3 +132,6 @@ dmypy.json
 Python/Flask/Flask_app/db.todo
 messages.txt
 golang/free.go
+golang/gin-practice/src/.air.toml
+main
+go.sum
