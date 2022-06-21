@@ -1,7 +1,9 @@
 package main
 
-import "module_test/module"
+import (
+	"module_test/module2"
+)
 
 func main(){
-	module.Hi()
+	module2.RequestHi()
 }
