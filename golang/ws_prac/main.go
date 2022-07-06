@@ -1,44 +1,54 @@
 package main
 
 import (
-	"fmt"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	"golang.org/x/net/websocket"
+    "fmt"
+    "github.com/gin-gonic/gin"
+    "github.com/gorilla/websocket"
+    "net/http"
+	"log"
 )
 
-func handleWebSocket(c echo.Context) error {
-	websocket.Handler(func(ws *websocket.Conn) {
-		defer ws.Close()
+func main() {
 
-		// 初回のメッセージを送信
-		err := websocket.Message.Send(ws,"Server: Hello, Client!")
-		if err != nil {
-			c.Logger().Error(err)
-		}
+    r := gin.Default()
+    r.LoadHTMLFiles("index.html")
 
-		for {
-			// Client からのメッセージを読み込む
-			msg := ""
-			err = websocket.Message.Receive(ws, &msg)
-			if err != nil {
-				c.Logger().Error(err)
-			}
+    r.GET("/", func(c *gin.Context) {
+        c.HTML(200, "index.html", nil)
+    })
 
-			// Client からのメッセージを元に返すメッセージを作成し送信する
-			err := websocket.Message.Send(ws, fmt.Sprintf("Server: \"%s\" received!", msg))
-			if err != nil {
-				c.Logger().Error(err)
-			}
-		}
-	}).ServeHTTP(c.Response(), c.Request())
-	return nil
+    r.GET("/ws", func(c *gin.Context) {
+        wshandler(c.Writer, c.Request)
+    })
+
+    r.Run("localhost:12312")
 }
 
-func main() {
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Static("/", "public")
-	e.GET("/ws", handleWebSocket)
-	e.Logger.Fatal(e.Start(":8080"))
+var wsupgrader = websocket.Upgrader{
+    ReadBufferSize:  1024,
+    WriteBufferSize: 1024,
+}
+
+func wshandler(w http.ResponseWriter, r *http.Request) {
+    conn, err := wsupgrader.Upgrade(w, r, nil)
+    if err != nil {
+        fmt.Println("Failed to set websocket upgrade: %+v", err)
+        return
+    }
+
+    for {
+        // t, msg, err := conn.ReadMessage()
+        if err != nil {
+            break
+        }
+		type jso struct{
+			msg string `json:"msg"`
+		}
+
+		jj := jso{
+			msg: "aa",
+		}
+        conn.WriteJSON(jj)
+		log.Println(jj)
+    }
 }
