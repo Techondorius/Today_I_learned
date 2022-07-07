@@ -48,7 +48,10 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 		jj := jso{
 			msg: "aa",
 		}
-        conn.WriteJSON(jj)
-		log.Println(jj)
+        if err := conn.WriteJSON(jj); err != nil{
+            log.Println(err)
+        } else{
+            log.Println(jj)
+        }
     }
 }

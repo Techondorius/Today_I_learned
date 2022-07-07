@@ -16,10 +16,12 @@
         c.send(data)
       }
 
-      c.onmessage = function(msg){
-        $("#output").append((new Date())+ " <== "+msg.data+"\n")
-        console.log(msg)
-      }
+      c.onmessage = function(e) {
+        var obj = JSON.parse(e.data);
+        $("#output").append((new Date())+ " <== "+obj.data+"\n")
+        console.log(obj)
+
+      };
 
       c.onopen = function(){
         setInterval(
