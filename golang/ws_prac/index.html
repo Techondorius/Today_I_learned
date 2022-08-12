@@ -18,8 +18,9 @@
 
       c.onmessage = function(e) {
         var obj = JSON.parse(e.data);
-        $("#output").append((new Date())+ " <== "+obj.data+"\n")
-        console.log(obj)
+        consele.log(e);
+        $("#output").append((new Date())+ " <== "+obj+"\n");
+        console.log(Object.keys(obj));
 
       };
 
