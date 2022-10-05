@@ -1,0 +1,8 @@
+version: "3"
+services:
+  go:
+    image: "pmc-backend-dev-app"
+    volumes:
+    - ".:/go/src"
+    ports:
+    - "8001:8080"
