@@ -2,19 +2,23 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Asdf struct {
 	Command string `json:"command"`
-	Args    Args   `json:"args"`
+	Arg     any    `json:"args"`
 }
 
-type Args map[string]string
-
-func (Args) Apple() {
-	fmt.Println("Apple")
+func GenerateApple(a any) int {
+	return int(a.(float64))
+}
+func GeneratePerl(a any) int {
+	b := a.(map[string]any)
+	log.Println(b)
+	return int(b["price"].(float64))
 }
 
 func main() {
@@ -27,8 +31,10 @@ func main() {
 func index(c *gin.Context) {
 	a := Asdf{}
 	c.ShouldBindJSON(&a)
-	if a.Command == "asdf" {
-		a.Args.Apple()
+	if a.Command == "apple" {
+		log.Println(GenerateApple(a.Arg))
+	} else if a.Command == "perl" {
+		log.Println(GeneratePerl(a.Arg))
 	}
 	c.JSON(200, a)
 }
