@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -12,6 +13,10 @@ import (
 func main() {
 	fmt.Println("Hello World")
 	g := gin.Default()
+	// Cors
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	g.Use(cors.New(config))
 	g.GET("/", func(c *gin.Context) {
 		c.JSON(200, "obj any")
 	})
