@@ -55,5 +55,7 @@ public class Ex019 {
             break;
         }
         System.out.printf("%d年は%s年です！\n", year, zodiac);
+        scan.close();
+
     }
 }
