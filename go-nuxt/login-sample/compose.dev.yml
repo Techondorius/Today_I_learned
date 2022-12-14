@@ -3,9 +3,9 @@ services:
   frontend:
     build:
       dockerfile: ./docker/dev/Dockerfile
-      context: ./nuxt-frontend
+      context: ./frontend
     volumes:
-    - ./nuxt-frontend:/src
+    - ./frontend:/src
     tty: true
     ports:
     - 3000:3000
