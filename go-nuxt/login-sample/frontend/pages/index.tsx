@@ -1,47 +1,44 @@
 import React, { useRef, useState } from 'react'
-import SubTest from '@/components/SubTest'
+import axios from 'axios'
 
 export default function Home() {
-  const [msg, setMsg] = useState('asdf')
-  const [count, setCount] = useState<number>(0)
+  const [tokens, setToken] = useState('')
+  const [userID, setUserID] = useState('')
 
-  const addCount = (n: number) => {
-    setCount(count + n)
+  const getJWT = async () => {
+    const response = await axios.get('http://localhost:8000/getJWT')
+    const statusOK: boolean = 200 <= response.status && response.status < 300
+    console.log(statusOK)
+    if (statusOK) {
+      setToken((): string => {
+        return response.data['token']
+      })
+    }
   }
 
-  const updateMsg = (newMsg: string) => {
-    setMsg(newMsg)
-  }
-
-  const inputField = useRef<HTMLInputElement>(null)
-  const handleClick = () => {
-    if (inputField.current) {
-      updateMsg(inputField.current.value)
-      console.log(inputField.current.value)
+  const checkJWT = async () => {
+    const config = {
+      method: 'get',
+      url: 'http://localhost:8000/checkJWT',
+      headers: {
+        token: tokens,
+      },
+    }
+    const response = await axios(config)
+    const statusOK: boolean = 200 <= response.status && response.status < 300
+    console.log(statusOK)
+    if (statusOK) {
+      setUserID(() => {
+        return response.data
+      })
     }
   }
 
   return (
     <>
-      <p>{count}</p>
-      <button
-        onClick={() => {
-          addCount(1)
-        }}
-      >
-        CountUp
-      </button>
-      <button
-        onClick={() => {
-          addCount(-1)
-        }}
-      >
-        CountDown
-      </button>
-      <h1>{msg}</h1>
-      <input type='text' ref={inputField} />
-      <button onClick={handleClick}>Touch Me!</button>
-      <SubTest msg={'SubTest'} />
+      <button onClick={getJWT}>request</button>
+      <button onClick={checkJWT}>check JWT</button>
+      <p>{userID}</p>
     </>
   )
 }
