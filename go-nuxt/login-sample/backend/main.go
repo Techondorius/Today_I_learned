@@ -1,14 +1,12 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"time"
 
-	"github.com/gin-contrib/cors"
+	"go-nuxt/login-sample/src/middleware"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -18,13 +16,10 @@ func main() {
 	g := gin.Default()
 
 	// Cors
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowHeaders = []string{"token"}
-	g.Use(cors.New(config))
+	g.Use(middleware.CORS())
 
 	// logger
-	g.Use(logger())
+	g.Use(middleware.Logger())
 
 	g.GET("/", func(c *gin.Context) {
 		c.JSON(200, "obj any")
@@ -63,19 +58,5 @@ func CheckJWT(c *gin.Context) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		fmt.Println(claims["user_id"])
 		c.JSON(200, claims["user_id"])
-	}
-}
-func logger() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		ByteBody, _ := ioutil.ReadAll(c.Request.Body)
-		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(ByteBody))
-		log.Println("Endpoint: " + c.FullPath())
-		log.Println("Body: " + string(ByteBody))
-
-		q := c.Request.URL.Query()
-		j, _ := json.Marshal(q)
-		log.Println("Query Params: " + string(j))
-
-		c.Next()
 	}
 }
