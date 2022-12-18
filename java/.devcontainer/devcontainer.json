@@ -1,0 +1,9 @@
+{
+    "name": "java",
+    "dockerComposeFile": "../compose.yml",
+    "workspaceFolder": "/src",
+    "service": "app",
+    "extensions": [
+        "vscjava.vscode-java-pack", "redhat.java", "formulahendry.code-runner"
+    ]
+}
