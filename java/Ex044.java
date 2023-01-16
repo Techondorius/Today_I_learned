@@ -23,21 +23,11 @@ class Rocket {
     int parts1, parts2, parts3, parts4, parts5, parts6;
 
     Rocket() {
-        this.parts1 = 0;
-        this.parts2 = 0;
-        this.parts3 = 0;
-        this.parts4 = 0;
-        this.parts5 = 0;
-        this.parts6 = 0;
+        this(0, 0, 0, 0, 0, 0);
     }
 
     Rocket(int p1, int p2, int p3) {
-        this.parts1 = p1;
-        this.parts2 = p2;
-        this.parts3 = p3;
-        this.parts4 = 0;
-        this.parts5 = 0;
-        this.parts6 = 0;
+        this(p1, p2, p3, 0, 0, 0);
         
     }
 
